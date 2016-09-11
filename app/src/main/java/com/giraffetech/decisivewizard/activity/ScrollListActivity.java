@@ -1,4 +1,4 @@
-package com.giraffetech.decisivewizard;
+package com.giraffetech.decisivewizard.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,12 +9,16 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class ListsListActivity extends AppCompatActivity {
+import com.giraffetech.decisivewizard.R;
+import com.giraffetech.decisivewizard.fragment.ScrollListFragment;
+import com.giraffetech.decisivewizard.model.Scroll;
+
+public class ScrollListActivity extends AppCompatActivity implements ScrollListFragment.OnListFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lists_list);
+        setContentView(R.layout.activity_scroll_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -26,6 +30,15 @@ public class ListsListActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        if (findViewById(R.id.fragment_container) != null) {
+            if (savedInstanceState == null) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.fragment_container, ScrollListFragment.newInstance())
+                        .commit();
+            }
+        }
     }
 
     @Override
@@ -48,5 +61,10 @@ public class ListsListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onListFragmentInteraction(Scroll scroll) {
+        //TODO:
     }
 }
