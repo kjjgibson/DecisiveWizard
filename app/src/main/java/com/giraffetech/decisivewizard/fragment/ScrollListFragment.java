@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 
 import com.giraffetech.decisivewizard.R;
 import com.giraffetech.decisivewizard.model.Scroll;
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.IAdapter;
+import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 
 import java.util.ArrayList;
 
@@ -44,7 +47,7 @@ public class ScrollListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scroll_list, container, false);
 
-        ArrayList<Scroll> scrolls = new ArrayList<>();
+        final ArrayList<Scroll> scrolls = new ArrayList<>();
         for (int i = 0; i <= 20; i++) {
             scrolls.add(new Scroll("Lunch", "What to have for lunch?!"));
             scrolls.add(new Scroll("Dinner", "Manly dinner options."));
@@ -53,7 +56,18 @@ public class ScrollListFragment extends Fragment {
         Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new ScrollRecyclerViewAdapter(scrolls, mListener));
+
+        FastItemAdapter<Scroll> fastAdapter = new FastItemAdapter<>();
+        recyclerView.setAdapter(fastAdapter);
+        fastAdapter.add(scrolls);
+        fastAdapter.withSelectable(true);
+        fastAdapter.withOnClickListener(new FastAdapter.OnClickListener<Scroll>() {
+            @Override
+            public boolean onClick(View v, IAdapter<Scroll> adapter, Scroll scroll, int position) {
+                mListener.onScrollSelected(scroll);
+                return true;
+            }
+        });
 
         return view;
     }
@@ -81,6 +95,6 @@ public class ScrollListFragment extends Fragment {
      * activity.
      */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Scroll scroll);
+        void onScrollSelected(Scroll scroll);
     }
 }

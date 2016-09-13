@@ -8,4 +8,4 @@
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.giraffetech.decisivewizard.fragment.ScrollListFragment"
-    tools:listitem="@layout/fragment_scroll" />
+    tools:listitem="@layout/scroll_list_item" />

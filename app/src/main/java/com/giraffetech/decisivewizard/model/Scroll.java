@@ -1,9 +1,17 @@
 package com.giraffetech.decisivewizard.model;
 
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
+
+import com.giraffetech.decisivewizard.R;
+import com.mikepenz.fastadapter.items.AbstractItem;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class Scroll {
+public class Scroll extends AbstractItem<Scroll, Scroll.ViewHolder> {
 
     //region Fields
     private String mName;
@@ -52,5 +60,36 @@ public class Scroll {
         mScrollItems = scrollItems;
     }
     //endregion Getters and Setters
+
+    //region Fast Adapter Methods
+    @Override
+    public int getType() {
+        return R.id.scroll_list_item;
+    }
+
+    @Override
+    public int getLayoutRes() {
+        return R.layout.scroll_list_item;
+    }
+
+    @Override
+    public void bindView(ViewHolder viewHolder, List payloads) {
+        super.bindView(viewHolder, payloads);
+
+        viewHolder.name.setText(mName);
+        viewHolder.description.setText(mDescription);
+    }
+
+    protected static class ViewHolder extends RecyclerView.ViewHolder {
+        protected TextView name;
+        protected TextView description;
+
+        public ViewHolder(View view) {
+            super(view);
+            this.name = (TextView) view.findViewById(R.id.textViewName);
+            this.description = (TextView) view.findViewById(R.id.textViewDescription);
+        }
+    }
+    //endregion Fast Adapter Methods
 
 }
