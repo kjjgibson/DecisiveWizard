@@ -1,20 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/textViewName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
+    <data>
+        <variable name="handler" type="com.giraffetech.decisivewizard.listitem.ScrollListItem.ScrollListItemHandler" />
+        <variable name="scroll" type="com.giraffetech.decisivewizard.model.Scroll" />
+    </data>
 
-    <TextView
-        android:id="@+id/textViewDescription"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
-</LinearLayout>
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutTitleDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/linearLayoutButtons"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:text="@{scroll.name}"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="Lunch Options" />
+
+            <TextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:text="@{scroll.description}"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="What to have for lunch?" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/linearLayoutTitleDescription"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="end"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp">
+
+            <ImageButton
+                android:id="@+id/imageButtonDecide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@android:color/transparent"
+                android:src="@android:drawable/star_off"
+                android:onClick="@{() -> handler.onDecideClick(scroll)}"/>
+
+            <ImageButton
+                android:id="@+id/imageButtonCustomDecide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@android:drawable/star_off"
+                android:onClick="@{() -> handler.onCustomDecideClick(scroll)}"/>
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

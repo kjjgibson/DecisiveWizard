@@ -8,8 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.giraffetech.decisivewizard.R;
+import com.giraffetech.decisivewizard.listitem.ScrollListItem;
 import com.giraffetech.decisivewizard.model.Scroll;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
@@ -23,7 +25,7 @@ import java.util.ArrayList;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ScrollListFragment extends Fragment {
+public class ScrollListFragment extends Fragment implements ScrollListItem.ScrollListItemHandler {
 
     private OnListFragmentInteractionListener mListener;
 
@@ -47,24 +49,24 @@ public class ScrollListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scroll_list, container, false);
 
-        final ArrayList<Scroll> scrolls = new ArrayList<>();
+        final ArrayList<ScrollListItem> scrollListItems = new ArrayList<>();
         for (int i = 0; i <= 20; i++) {
-            scrolls.add(new Scroll("Lunch", "What to have for lunch?!"));
-            scrolls.add(new Scroll("Dinner", "Manly dinner options."));
+            scrollListItems.add(new ScrollListItem(new Scroll("Lunch", "What to have for lunch?!"), this));
+            scrollListItems.add(new ScrollListItem(new Scroll("Dinner", "Manly dinner options."), this));
         }
 
         Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        FastItemAdapter<Scroll> fastAdapter = new FastItemAdapter<>();
+        FastItemAdapter<ScrollListItem> fastAdapter = new FastItemAdapter<>();
         recyclerView.setAdapter(fastAdapter);
-        fastAdapter.add(scrolls);
+        fastAdapter.add(scrollListItems);
         fastAdapter.withSelectable(true);
-        fastAdapter.withOnClickListener(new FastAdapter.OnClickListener<Scroll>() {
+        fastAdapter.withOnClickListener(new FastAdapter.OnClickListener<ScrollListItem>() {
             @Override
-            public boolean onClick(View v, IAdapter<Scroll> adapter, Scroll scroll, int position) {
-                mListener.onScrollSelected(scroll);
+            public boolean onClick(View v, IAdapter<ScrollListItem> adapter, ScrollListItem scrollListItem, int position) {
+                mListener.onScrollSelected(scrollListItem.getScroll());
                 return true;
             }
         });
@@ -86,6 +88,16 @@ public class ScrollListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onDecideClick(Scroll scroll) {
+        Toast.makeText(getActivity(), "Decide Clicked for scroll: " + scroll.getName(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCustomDecideClick(Scroll scroll) {
+        Toast.makeText(getActivity(), "Custom Decide Clicked for scroll: " + scroll.getName(), Toast.LENGTH_SHORT).show();
     }
 
     /**
