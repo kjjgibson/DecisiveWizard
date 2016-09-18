@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:background="@android:color/transparent"
-                android:src="@android:drawable/star_off"
+                android:src="@drawable/ic_link_black_24dp"
                 android:onClick="@{() -> handler.onDecideClick(scrollListItem.scroll)}"
                 android:contentDescription="@string/decide" />
 
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:src="@android:drawable/star_off"
+                android:src="@drawable/ic_low_priority_black_24dp"
                 android:onClick="@{() -> handler.onCustomDecideClick(scrollListItem.scroll)}"
                 android:contentDescription="@string/custom_decide" />
         </LinearLayout>

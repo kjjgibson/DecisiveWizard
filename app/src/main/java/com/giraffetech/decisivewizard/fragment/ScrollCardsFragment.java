@@ -43,11 +43,6 @@ public class ScrollCardsFragment extends Fragment implements ScrollListItemHandl
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scroll_cards, container, false);
 

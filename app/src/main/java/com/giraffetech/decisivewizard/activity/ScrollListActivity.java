@@ -1,5 +1,6 @@
 package com.giraffetech.decisivewizard.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -54,8 +55,10 @@ public class ScrollListActivity extends AppCompatActivity implements OnListFragm
         if (id == R.id.action_toggle_scroll_view) {
             if (getFragmentManager().findFragmentByTag(ScrollListFragment.class.getName()) != null) {
                 showScrollCardsFragment();
+                item.setIcon(R.drawable.ic_list_white_36dp);
             } else {
                 showScrollListFragment();
+                item.setIcon(R.drawable.ic_view_agenda_white_36dp);
             }
             return true;
         }
@@ -70,8 +73,9 @@ public class ScrollListActivity extends AppCompatActivity implements OnListFragm
 
     //region Click Listeners
     @OnClick(R.id.fab)
-    void onFabClicked(View view) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    void onFabClicked() {
+        Intent intent = new Intent(this, CreateScrollActivity.class);
+        startActivity(intent);
     }
     //endregion Click Listeners
 

@@ -6,4 +6,10 @@
     <string name="decide">Decide</string>
     <string name="banner">banner</string>
     <string name="banner_bottom">banner bottom</string>
+    <string name="title_activity_create_scroll">Create a Scroll</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="item">Item</string>
+    <string name="reorder">reorder</string>
+    <string name="add_item">Add Item</string>
 </resources>
