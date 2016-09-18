@@ -1,15 +1,16 @@
 package com.giraffetech.decisivewizard.model;
 
+import android.databinding.BaseObservable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Scroll {
+public class Scroll extends BaseObservable {
 
     //region Fields
     private String mName;
     private String mDescription;
     private Date mCreatedAt;
-    private ArrayList<String> mScrollItems;
+    private ArrayList<String> mScrollItems = new ArrayList<>();
     //endregion Fields
 
     //region Constructors
@@ -17,9 +18,10 @@ public class Scroll {
 
     }
 
-    public Scroll(String name, String description) {
+    public Scroll(String name, String description, ArrayList<String> scrollItems) {
         mName = name;
         mDescription = description;
+        mScrollItems = scrollItems;
     }
     //endregion Constructors
 

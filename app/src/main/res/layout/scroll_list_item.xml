@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="handler" type="com.giraffetech.decisivewizard.listitem.ScrollListItem.ScrollListItemHandler" />
-        <variable name="scroll" type="com.giraffetech.decisivewizard.model.Scroll" />
+        <variable name="handler" type="com.giraffetech.decisivewizard.listener.ScrollListItemHandler" />
+        <variable name="scrollListItem" type="com.giraffetech.decisivewizard.listitem.ScrollListItem" />
     </data>
 
     <RelativeLayout
@@ -18,23 +18,23 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_toStartOf="@+id/linearLayoutButtons"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="15dp">
 
             <TextView
                 android:id="@+id/textViewName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:text="@{scroll.name}"
+                android:text="@{scrollListItem.name}"
                 android:textAppearance="?attr/textAppearanceListItem"
-                tools:text="Lunch Options" />
+                tools:text="Lunch Options"
+                android:layout_marginBottom="10dp" />
 
             <TextView
                 android:id="@+id/textViewDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:text="@{scroll.description}"
+                android:text="@{scrollListItem.description}"
                 android:textAppearance="?attr/textAppearanceListItem"
                 tools:text="What to have for lunch?" />
         </LinearLayout>
@@ -59,7 +59,8 @@
                 android:layout_marginBottom="10dp"
                 android:background="@android:color/transparent"
                 android:src="@android:drawable/star_off"
-                android:onClick="@{() -> handler.onDecideClick(scroll)}"/>
+                android:onClick="@{() -> handler.onDecideClick(scrollListItem.scroll)}"
+                android:contentDescription="@string/decide" />
 
             <ImageButton
                 android:id="@+id/imageButtonCustomDecide"
@@ -67,7 +68,8 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:src="@android:drawable/star_off"
-                android:onClick="@{() -> handler.onCustomDecideClick(scroll)}"/>
+                android:onClick="@{() -> handler.onCustomDecideClick(scrollListItem.scroll)}"
+                android:contentDescription="@string/custom_decide" />
         </LinearLayout>
     </RelativeLayout>
 </layout>

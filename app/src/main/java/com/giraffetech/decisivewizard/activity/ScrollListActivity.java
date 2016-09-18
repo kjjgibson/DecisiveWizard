@@ -11,14 +11,16 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.giraffetech.decisivewizard.R;
+import com.giraffetech.decisivewizard.fragment.ScrollCardsFragment;
 import com.giraffetech.decisivewizard.fragment.ScrollListFragment;
+import com.giraffetech.decisivewizard.listener.OnListFragmentInteractionListener;
 import com.giraffetech.decisivewizard.model.Scroll;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ScrollListActivity extends AppCompatActivity implements ScrollListFragment.OnListFragmentInteractionListener {
+public class ScrollListActivity extends AppCompatActivity implements OnListFragmentInteractionListener {
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.fab) FloatingActionButton mFab;
@@ -33,10 +35,7 @@ public class ScrollListActivity extends AppCompatActivity implements ScrollListF
 
         if (findViewById(R.id.fragment_container) != null) {
             if (savedInstanceState == null) {
-                getFragmentManager()
-                        .beginTransaction()
-                        .add(R.id.fragment_container, ScrollListFragment.newInstance())
-                        .commit();
+                showScrollCardsFragment();
             }
         }
     }
@@ -50,13 +49,14 @@ public class ScrollListActivity extends AppCompatActivity implements ScrollListF
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_toggle_scroll_view) {
+            if (getFragmentManager().findFragmentByTag(ScrollListFragment.class.getName()) != null) {
+                showScrollCardsFragment();
+            } else {
+                showScrollListFragment();
+            }
             return true;
         }
 
@@ -74,4 +74,18 @@ public class ScrollListActivity extends AppCompatActivity implements ScrollListF
         Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
     //endregion Click Listeners
+
+    private void showScrollListFragment() {
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, ScrollListFragment.newInstance(), ScrollListFragment.class.getName())
+                .commit();
+    }
+
+    private void showScrollCardsFragment() {
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, ScrollCardsFragment.newInstance(), ScrollCardsFragment.class.getName())
+                .commit();
+    }
 }
