@@ -24,11 +24,9 @@ import com.mikepenz.fastadapter_extensions.drag.SimpleDragCallback;
 
 import java.util.ArrayList;
 
-public class CreateScrollFragment extends Fragment implements ItemTouchCallback, ScrollItemListItemHandler, FastAdapter.OnClickListener {
+public class CreateScrollFragment extends Fragment implements ItemTouchCallback, ScrollItemListItemHandler, FastAdapter.OnClickListener<IItem> {
 
-    private FastAdapter mFastAdapter;
     private ItemAdapter<ScrollItemListItem> mScrollItemListItemItemAdapter;
-    private FooterAdapter<AddScrollItemListItem> mFooterAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -55,9 +53,9 @@ public class CreateScrollFragment extends Fragment implements ItemTouchCallback,
         touchHelper.attachToRecyclerView(recyclerView);
 
         //Set up the adapters
-        mFooterAdapter = new FooterAdapter<>();
+        FooterAdapter<AddScrollItemListItem> mFooterAdapter = new FooterAdapter<>();
         mScrollItemListItemItemAdapter = new ItemAdapter<>();
-        mFastAdapter = new FastAdapter();
+        FastAdapter<IItem> mFastAdapter = new FastAdapter<>();
         mFastAdapter.withSelectable(true);
         mFastAdapter.withOnClickListener(this);
 
@@ -89,13 +87,24 @@ public class CreateScrollFragment extends Fragment implements ItemTouchCallback,
     }
 
     @Override
+    public void addNewItemAfter(ScrollItemListItem item) {
+        addNewEmptyItem(mScrollItemListItemItemAdapter.getAdapterItems().indexOf(item) + 1);
+    }
+
+    @Override
     public boolean onClick(View v, IAdapter adapter, IItem item, int position) {
         boolean eventConsumed = false;
         if (adapter instanceof FooterAdapter) {
-            mScrollItemListItemItemAdapter.add(new ScrollItemListItem("", this));
+            addNewEmptyItem(mScrollItemListItemItemAdapter.getItemCount() - 1);
             eventConsumed = true;
         }
         return eventConsumed;
+    }
+
+    private void addNewEmptyItem(int position) {
+        ScrollItemListItem item = new ScrollItemListItem("", this);
+        mScrollItemListItemItemAdapter.add(position, item);
+        item.setShouldHaveFocus(true);
     }
 
     private ArrayList<ScrollItemListItem> getScrollItemListItems() {

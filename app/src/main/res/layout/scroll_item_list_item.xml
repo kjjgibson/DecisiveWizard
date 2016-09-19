@@ -37,13 +37,14 @@
             android:inputType="textCapWords|textMultiLine" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/imageButtonRemoveItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_clear_black_24dp"
+            android:visibility="invisible"
             android:onClick="@{() -> handler.onRemoveItemClick(scrollItemListItem)}"
             android:contentDescription="@string/item" />
 
