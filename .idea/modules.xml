@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DecisiveWizard.iml" filepath="$PROJECT_DIR$/DecisiveWizard.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/decisive-wizard.iml" filepath="$PROJECT_DIR$/decisive-wizard.iml" />
     </modules>
   </component>
 </project>
