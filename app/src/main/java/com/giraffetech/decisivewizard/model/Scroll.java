@@ -1,10 +1,9 @@
 package com.giraffetech.decisivewizard.model;
 
-import android.databinding.BaseObservable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Scroll extends BaseObservable {
+public class Scroll {
 
     //region Fields
     private String mName;

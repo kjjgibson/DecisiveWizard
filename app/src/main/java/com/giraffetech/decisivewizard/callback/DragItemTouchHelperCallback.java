@@ -18,7 +18,12 @@ public class DragItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-        return mAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+        boolean moved = false;
+        if (mAdapter != null) {
+            mAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+            moved = true;
+        }
+        return moved;
     }
 
     @Override
