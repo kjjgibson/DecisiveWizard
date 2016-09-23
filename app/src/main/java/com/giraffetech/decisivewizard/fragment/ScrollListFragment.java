@@ -95,6 +95,11 @@ public class ScrollListFragment extends Fragment implements ScrollListItemHandle
     }
 
     @Override
+    public void onItemClick(Scroll scroll) {
+        //TODO:
+    }
+
+    @Override
     public void onDecideClick(Scroll scroll) {
         Toast.makeText(getActivity(), "Decide Clicked for scroll: " + scroll.getName(), Toast.LENGTH_SHORT).show();
     }

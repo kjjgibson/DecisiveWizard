@@ -11,13 +11,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.giraffetech.decisivewizard.R;
+import com.giraffetech.decisivewizard.adapter.ScrollCardAdapter;
 import com.giraffetech.decisivewizard.listener.OnListFragmentInteractionListener;
 import com.giraffetech.decisivewizard.listener.ScrollListItemHandler;
 import com.giraffetech.decisivewizard.listitem.ScrollCardItem;
 import com.giraffetech.decisivewizard.model.Scroll;
-import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.IAdapter;
-import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 
 import java.util.ArrayList;
 
@@ -42,35 +40,18 @@ public class ScrollCardsFragment extends Fragment implements ScrollListItemHandl
         return new ScrollCardsFragment();
     }
 
+    //region Lifecycle Methods
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scroll_cards, container, false);
 
-        ArrayList<String> scrollItems = new ArrayList<>();
-        for (int i = 0; i <= 10; i++) {
-            scrollItems.add("Item 1");
-        }
-        final ArrayList<ScrollCardItem> scrollCardItems = new ArrayList<>();
-        for (int i = 0; i <= 20; i++) {
-            scrollCardItems.add(new ScrollCardItem(new Scroll("Lunch", "What to have for lunch?!", scrollItems), this));
-            scrollCardItems.add(new ScrollCardItem(new Scroll("Dinner", "Manly dinner options.", scrollItems), this));
-        }
+        ScrollCardAdapter scrollCardAdapter = new ScrollCardAdapter(this);
+        scrollCardAdapter.setItems(getScrollCardItems());
 
         Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-
-        FastItemAdapter<ScrollCardItem> fastAdapter = new FastItemAdapter<>();
-        recyclerView.setAdapter(fastAdapter);
-        fastAdapter.add(scrollCardItems);
-        fastAdapter.withSelectable(true);
-        fastAdapter.withOnClickListener(new FastAdapter.OnClickListener<ScrollCardItem>() {
-            @Override
-            public boolean onClick(View v, IAdapter<ScrollCardItem> adapter, ScrollCardItem scrollCardItem, int position) {
-                mListener.onScrollSelected(scrollCardItem.getScroll());
-                return true;
-            }
-        });
+        recyclerView.setAdapter(scrollCardAdapter);
 
         return view;
     }
@@ -90,6 +71,13 @@ public class ScrollCardsFragment extends Fragment implements ScrollListItemHandl
         super.onDetach();
         mListener = null;
     }
+    //endregion Lifecycle Methods
+
+    //region ScrollListItemHandler Methods
+    @Override
+    public void onItemClick(Scroll scroll) {
+        mListener.onScrollSelected(scroll);
+    }
 
     @Override
     public void onDecideClick(Scroll scroll) {
@@ -100,4 +88,23 @@ public class ScrollCardsFragment extends Fragment implements ScrollListItemHandl
     public void onCustomDecideClick(Scroll scroll) {
         Toast.makeText(getActivity(), "Custom Decide Clicked for scroll: " + scroll.getName(), Toast.LENGTH_SHORT).show();
     }
+    //endregion ScrollListItemHandler Methods
+
+    //region Private Methods
+    private ArrayList<ScrollCardItem> getScrollCardItems() {
+        ArrayList<String> scrollItems = new ArrayList<>();
+        for (int i = 0; i <= 10; i++) {
+            scrollItems.add("Item 1");
+        }
+
+        final ArrayList<ScrollCardItem> scrollCardItems = new ArrayList<>();
+        for (int i = 0; i <= 20; i++) {
+            scrollCardItems.add(new ScrollCardItem(new Scroll("Lunch", "What to have for lunch?!", scrollItems)));
+            scrollCardItems.add(new ScrollCardItem(new Scroll("Dinner", "Manly dinner options.", scrollItems)));
+        }
+
+        return scrollCardItems;
+    }
+    //endregion Private Methods
+
 }

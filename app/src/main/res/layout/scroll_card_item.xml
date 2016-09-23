@@ -1,105 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="handler"
-            type="com.giraffetech.decisivewizard.listener.ScrollListItemHandler" />
+            type="com.giraffetech.decisivewizard.listener.ScrollListItemHandler"/>
 
         <variable
             name="scrollCardItem"
-            type="com.giraffetech.decisivewizard.listitem.ScrollCardItem" />
+            type="com.giraffetech.decisivewizard.listitem.ScrollCardItem"/>
     </data>
 
     <LinearLayout xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content">
 
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/cardViewScroll"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            card_view:cardElevation="4dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp">
+        <android.support.v7.widget.CardView android:id="@+id/cardViewScroll"
+                                            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_marginBottom="10dp"
+                                            android:layout_marginLeft="10dp"
+                                            android:layout_marginRight="10dp"
+                                            android:layout_marginTop="10dp"
+                                            android:onClick="@{() -> handler.onDecideClick(scrollCardItem.scroll)}"
+                                            card_view:cardElevation="4dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <ImageView
+                    android:id="@+id/imageViewBanner"
                     android:layout_width="fill_parent"
                     android:layout_height="120dp"
-                    android:id="@+id/imageViewBanner"
                     android:background="@color/colorPrimary"
-                    android:contentDescription="@string/banner" />
+                    android:contentDescription="@string/banner"/>
 
                 <ImageView
+                    android:id="@+id/imageViewBannerBottom"
                     android:layout_width="fill_parent"
                     android:layout_height="40dp"
-                    android:id="@+id/imageViewBannerBottom"
                     android:layout_alignBottom="@+id/imageViewBanner"
                     android:background="#54424242"
-                    android:contentDescription="@string/banner_bottom" />
+                    android:contentDescription="@string/banner_bottom"/>
 
                 <TextView
                     android:id="@+id/textViewName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{scrollCardItem.name}"
-                    tools:text="Lunch Options"
                     android:layout_alignBottom="@+id/imageViewBanner"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="15dp"
+                    android:text="@{scrollCardItem.name}"
                     android:textColor="@android:color/white"
                     android:textSize="20sp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginBottom="5dp" />
+                    tools:text="Lunch Options"/>
 
                 <TextView
                     android:id="@+id/textViewDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{scrollCardItem.description}"
-                    tools:text="What should we have for lunch?"
-                    android:layout_below="@+id/textViewName"
                     android:layout_alignStart="@+id/textViewName"
+                    android:layout_below="@+id/textViewName"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp" />
+                    android:text="@{scrollCardItem.description}"
+                    tools:text="What should we have for lunch?"/>
 
                 <TextView
+                    android:id="@+id/textViewScrollItemsPreview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{scrollCardItem.scrollItemsPreview}"
-                    android:id="@+id/textViewScrollItemsPreview"
                     android:layout_alignStart="@+id/textViewName"
                     android:layout_below="@+id/textViewDescription"
+                    android:text="@{scrollCardItem.scrollItemsPreview}"
                     tools:text="Manly Thai Gourmet\nMortar and Pestle\nChica Bonita\n..."/>
 
                 <Button
+                    android:id="@+id/buttonDecide"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/decide"
-                    android:id="@+id/buttonDecide"
-                    android:background="@android:color/transparent"
-                    android:layout_below="@+id/textViewScrollItemsPreview"
                     android:layout_alignStart="@+id/textViewName"
-                    android:layout_marginTop="15dp"
+                    android:layout_below="@+id/textViewScrollItemsPreview"
                     android:layout_marginEnd="20dp"
-                    android:onClick="@{() -> handler.onDecideClick(scrollCardItem.scroll)}"/>
+                    android:layout_marginTop="15dp"
+                    android:background="@android:color/transparent"
+                    android:onClick="@{() -> handler.onDecideClick(scrollCardItem.scroll)}"
+                    android:text="@string/decide"/>
 
                 <Button
+                    android:id="@+id/buttonCustomDecide"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/custom_decide"
-                    android:id="@+id/buttonCustomDecide"
-                    android:background="@android:color/transparent"
                     android:layout_alignTop="@+id/buttonDecide"
                     android:layout_toEndOf="@+id/buttonDecide"
-                    android:onClick="@{() -> handler.onCustomDecideClick(scrollCardItem.scroll)}"/>
+                    android:background="@android:color/transparent"
+                    android:onClick="@{() -> handler.onCustomDecideClick(scrollCardItem.scroll)}"
+                    android:text="@string/custom_decide"/>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>

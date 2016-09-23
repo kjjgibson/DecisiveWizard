@@ -1,31 +1,24 @@
 package com.giraffetech.decisivewizard.adapter;
 
-import android.databinding.DataBindingUtil;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import com.giraffetech.decisivewizard.R;
 import com.giraffetech.decisivewizard.callback.DragItemTouchHelperCallback;
-import com.giraffetech.decisivewizard.databinding.AddScrollItemListItemBinding;
-import com.giraffetech.decisivewizard.databinding.ScrollItemListItemBinding;
 import com.giraffetech.decisivewizard.listener.OnStartDragListener;
 import com.giraffetech.decisivewizard.listener.ScrollItemListItemHandler;
 import com.giraffetech.decisivewizard.listitem.ScrollItemListItem;
 import com.giraffetech.decisivewizard.textwatcher.SimpleTextWatcher;
+import com.giraffetech.decisivewizard.viewholder.FooterViewHolder;
+import com.giraffetech.decisivewizard.viewholder.ScrollItemViewHolder;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class ScrollItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements DragItemTouchHelperCallback.ItemTouchHelperAdapter, ScrollItemListItemHandler {
 
@@ -55,20 +48,20 @@ public class ScrollItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.scroll_item_list_item, parent, false);
 
-            final ItemViewHolder itemViewHolder = new ItemViewHolder(view, new SimpleTextWatcher());
-            itemViewHolder.mScrollItemEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            final ScrollItemViewHolder itemViewHolder = new ScrollItemViewHolder(view, new SimpleTextWatcher());
+            itemViewHolder.getScrollItemEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (hasFocus) {
-                        itemViewHolder.mRemoveImageButton.setVisibility(View.VISIBLE);
+                        itemViewHolder.getRemoveImageButton().setVisibility(View.VISIBLE);
                     }
                     else {
-                        itemViewHolder.mRemoveImageButton.setVisibility(View.INVISIBLE);
+                        itemViewHolder.getRemoveImageButton().setVisibility(View.INVISIBLE);
                     }
                 }
             });
 
-            itemViewHolder.mDragHandleImageView.setOnTouchListener(new View.OnTouchListener() {
+            itemViewHolder.getDragHandleImageView().setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
@@ -86,31 +79,31 @@ public class ScrollItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) {
-        if (viewHolder instanceof ItemViewHolder) {
-            ItemViewHolder itemViewHolder = (ItemViewHolder) viewHolder;
+        if (viewHolder instanceof ScrollItemViewHolder) {
+            ScrollItemViewHolder itemViewHolder = (ScrollItemViewHolder) viewHolder;
 
             final ScrollItemListItem item = mScrollItemListItems.get(position);
 
             //Items should have focus when they are first added to the adapter
             if (item.shouldHaveFocus()) {
-                itemViewHolder.mScrollItemEditText.requestFocus();
+                itemViewHolder.getScrollItemEditText().requestFocus();
                 item.shouldHaveFocus(false);
             }
 
-            itemViewHolder.mTextWatcher.setListener(new SimpleTextWatcher.SimpleTextWatcherListener() {
+            itemViewHolder.getTextWatcher().setListener(new SimpleTextWatcher.SimpleTextWatcherListener() {
                 @Override
                 public void onEnterKeyPressed() {
                     addNewItemAfter(item);
                 }
             });
-            itemViewHolder.mBinding.setHandler(this);
-            itemViewHolder.mBinding.setScrollItemListItem(item);
-            itemViewHolder.mBinding.executePendingBindings();
+            itemViewHolder.getBinding().setHandler(this);
+            itemViewHolder.getBinding().setScrollItemListItem(item);
+            itemViewHolder.getBinding().executePendingBindings();
         }
         else if (viewHolder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) viewHolder;
 
-            footerViewHolder.mBinding.setHandler(this);
+            footerViewHolder.getBinding().setHandler(this);
         }
     }
 
@@ -195,41 +188,5 @@ public class ScrollItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyItemInserted(position);
     }
     //endregion Private Methods
-
-    //region ViewHolder Classes
-    protected static class ItemViewHolder extends RecyclerView.ViewHolder {
-
-        private ScrollItemListItemBinding mBinding;
-
-        @BindView(R.id.editTextScrollItem)
-        EditText mScrollItemEditText;
-
-        @BindView(R.id.imageButtonRemoveItem)
-        ImageButton mRemoveImageButton;
-
-        @BindView(R.id.imageViewDragHandle)
-        ImageView mDragHandleImageView;
-
-        SimpleTextWatcher mTextWatcher;
-
-        public ItemViewHolder(View view, SimpleTextWatcher textWatcher) {
-            super(view);
-            ButterKnife.bind(this, view);
-            mBinding = DataBindingUtil.bind(view);
-            mTextWatcher = textWatcher;
-            mScrollItemEditText.addTextChangedListener(mTextWatcher);
-        }
-    }
-
-    protected static class FooterViewHolder extends RecyclerView.ViewHolder {
-
-        private AddScrollItemListItemBinding mBinding;
-
-        public FooterViewHolder(View view) {
-            super(view);
-            mBinding = DataBindingUtil.bind(view);
-        }
-    }
-    //endregion ViewHolder Classes
 
 }
