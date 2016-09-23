@@ -1,28 +1,16 @@
 package com.giraffetech.decisivewizard.listitem;
 
-import android.databinding.DataBindingUtil;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-
-import com.giraffetech.decisivewizard.R;
-import com.giraffetech.decisivewizard.databinding.ScrollListItemBinding;
-import com.giraffetech.decisivewizard.listener.ScrollListItemHandler;
 import com.giraffetech.decisivewizard.model.Scroll;
-import com.mikepenz.fastadapter.items.AbstractItem;
 
-import java.util.List;
-
-public class ScrollListItem extends AbstractItem<ScrollListItem, ScrollListItem.ViewHolder> {
+public class ScrollListItem {
 
     //region Fields
     private Scroll mScroll;
-    private ScrollListItemHandler mScrollListItemHandler;
     //endregion Fields
 
     //region Constructors
-    public ScrollListItem(Scroll scroll, ScrollListItemHandler scrollListItemHandler) {
+    public ScrollListItem(Scroll scroll) {
         mScroll = scroll;
-        mScrollListItemHandler = scrollListItemHandler;
     }
     //endregion Constructors
 
@@ -39,35 +27,5 @@ public class ScrollListItem extends AbstractItem<ScrollListItem, ScrollListItem.
         return mScroll.getDescription();
     }
     //endregion Getters and Setters
-
-    //region Fast Adapter Methods
-    @Override
-    public int getType() {
-        return R.id.scroll_list_item;
-    }
-
-    @Override
-    public int getLayoutRes() {
-        return R.layout.scroll_list_item;
-    }
-
-    @Override
-    public void bindView(ViewHolder viewHolder, List payloads) {
-        super.bindView(viewHolder, payloads);
-
-        viewHolder.mBinding.setHandler(mScrollListItemHandler);
-        viewHolder.mBinding.setScrollListItem(this);
-        viewHolder.mBinding.executePendingBindings();
-    }
-
-    protected static class ViewHolder extends RecyclerView.ViewHolder {
-        private ScrollListItemBinding mBinding;
-
-        public ViewHolder(View view) {
-            super(view);
-            mBinding = DataBindingUtil.bind(view);
-        }
-    }
-    //endregion Fast Adapter Methods
 
 }

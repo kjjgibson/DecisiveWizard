@@ -33,6 +33,7 @@ public class CreateScrollFragment extends Fragment implements OnStartDragListene
         return new CreateScrollFragment();
     }
 
+    //region Lifecycle Methods
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_scroll, container, false);
@@ -50,12 +51,16 @@ public class CreateScrollFragment extends Fragment implements OnStartDragListene
 
         return view;
     }
+    //endregion Lifecycle Methods
 
+    //region OnStartDragListener Methods
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         mItemTouchHelper.startDrag(viewHolder);
     }
+    //endregion OnStartDragListener Methods
 
+    //region Private Methods
     private ArrayList<ScrollItemListItem> getScrollItemListItems() {
         final ArrayList<ScrollItemListItem> scrollItemListItems = new ArrayList<>();
         for (int i = 0; i <= 2; i++) {
@@ -63,5 +68,6 @@ public class CreateScrollFragment extends Fragment implements OnStartDragListene
         }
         return scrollItemListItems;
     }
+    //endregion Private Methods
 
 }
