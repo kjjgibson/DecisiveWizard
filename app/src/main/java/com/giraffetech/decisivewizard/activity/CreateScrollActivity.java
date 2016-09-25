@@ -40,7 +40,7 @@ public class CreateScrollActivity extends AppCompatActivity {
                 getFragmentManager()
                         .beginTransaction()
                         .add(R.id.fragment_container, CreateScrollFragment.newInstance(), CreateScrollFragment.class.getName())
-                        .commit();
+                        .commit(); //TODO: Dependency on static fragment method
             }
         }
     }

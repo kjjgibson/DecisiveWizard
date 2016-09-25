@@ -1,5 +1,7 @@
 package com.giraffetech.decisivewizard.listitem;
 
+import android.support.annotation.NonNull;
+
 import com.giraffetech.decisivewizard.model.Scroll;
 
 public class ScrollListItem {
@@ -9,7 +11,7 @@ public class ScrollListItem {
     //endregion Fields
 
     //region Constructors
-    public ScrollListItem(Scroll scroll) {
+    public ScrollListItem(@NonNull Scroll scroll) {
         mScroll = scroll;
     }
     //endregion Constructors
@@ -20,11 +22,11 @@ public class ScrollListItem {
     }
 
     public String getName() {
-        return mScroll.getName();
+        return mScroll != null ? mScroll.getName() : "";
     }
 
     public String getDescription() {
-        return mScroll.getDescription();
+        return mScroll != null ? mScroll.getDescription() : "";
     }
     //endregion Getters and Setters
 

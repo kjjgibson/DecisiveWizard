@@ -83,13 +83,13 @@ public class ScrollListActivity extends AppCompatActivity implements OnListFragm
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, ScrollListFragment.newInstance(), ScrollListFragment.class.getName())
-                .commit();
+                .commit(); //TODO: Dependency
     }
 
     private void showScrollCardsFragment() {
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, ScrollCardsFragment.newInstance(), ScrollCardsFragment.class.getName())
-                .commit();
+                .commit(); //TODO: Dependency
     }
 }

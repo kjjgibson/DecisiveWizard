@@ -38,15 +38,16 @@ public class CreateScrollFragment extends Fragment implements OnStartDragListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_scroll, container, false);
 
+        //TODO: Dependency
         ScrollItemAdapter scrollItemListItemItemAdapter = new ScrollItemAdapter(this);
         scrollItemListItemItemAdapter.setItems(getScrollItemListItems());
 
         Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewScrollListItems);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context)); //TODO: Dependency
         recyclerView.setAdapter(scrollItemListItemItemAdapter);
 
-        mItemTouchHelper = new ItemTouchHelper(new DragItemTouchHelperCallback(scrollItemListItemItemAdapter));
+        mItemTouchHelper = new ItemTouchHelper(new DragItemTouchHelperCallback(scrollItemListItemItemAdapter)); //TODO: Dependency
         mItemTouchHelper.attachToRecyclerView(recyclerView);
 
         return view;

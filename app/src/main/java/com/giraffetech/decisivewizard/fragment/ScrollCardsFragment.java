@@ -45,12 +45,12 @@ public class ScrollCardsFragment extends Fragment implements ScrollListItemHandl
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scroll_cards, container, false);
 
-        ScrollCardAdapter scrollCardAdapter = new ScrollCardAdapter(this);
+        ScrollCardAdapter scrollCardAdapter = new ScrollCardAdapter(this); //TODO: Dependency
         scrollCardAdapter.setItems(getScrollCardItems());
 
         Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context)); //TODO: Dependency
         recyclerView.setAdapter(scrollCardAdapter);
 
         return view;

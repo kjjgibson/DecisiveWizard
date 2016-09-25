@@ -51,13 +51,13 @@ public class ScrollListFragment extends Fragment implements ScrollListItemHandle
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scroll_list, container, false);
 
-        ScrollListAdapter scrollListAdapter = new ScrollListAdapter(this);
+        ScrollListAdapter scrollListAdapter = new ScrollListAdapter(this); //TODO: Dependency
         scrollListAdapter.setItems(getScrollListItems());
 
         Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context)); //TODO: Dependency
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity())); //TODO: Dependency
         recyclerView.setAdapter(scrollListAdapter);
 
         return view;

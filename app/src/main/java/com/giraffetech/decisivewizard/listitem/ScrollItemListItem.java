@@ -37,10 +37,4 @@ public class ScrollItemListItem {
     }
     //endregion Getters and Setters
 
-    //region Public Methods
-    public void setShouldHaveFocus(boolean shouldHaveFocus) {
-        mShouldHaveFocus = shouldHaveFocus;
-    }
-    //endregion Public Methods
-
 }

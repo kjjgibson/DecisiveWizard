@@ -182,7 +182,7 @@ public class ScrollItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     //region Private Methods
     private void addNewItemAt(int position) {
         ScrollItemListItem newItem = new ScrollItemListItem("");
-        newItem.setShouldHaveFocus(true);
+        newItem.shouldHaveFocus(true);
 
         mScrollItemListItems.add(position, newItem);
         notifyItemInserted(position);
