@@ -1,5 +1,7 @@
 package com.giraffetech.decisivewizard.adapter;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,13 +27,15 @@ public class ScrollItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     //region Fields
     private static final int FOOTER_VIEW = 1;
 
+    @NonNull
     private List<ScrollItemListItem> mScrollItemListItems = new ArrayList<>();
-    private final OnStartDragListener mDragStartListener;
+
+    @Nullable
+    private OnStartDragListener mDragStartListener;
     //endregion Fields
 
     //region Constructors
-    public ScrollItemAdapter(OnStartDragListener dragStartListener) {
-        mDragStartListener = dragStartListener;
+    public ScrollItemAdapter() {
     }
     //endregion Constructors
 
@@ -44,8 +48,7 @@ public class ScrollItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_scroll_item_list_item, parent, false);
 
             viewHolder = new FooterViewHolder(view);
-        }
-        else {
+        } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.scroll_item_list_item, parent, false);
 
             final ScrollItemViewHolder itemViewHolder = new ScrollItemViewHolder(view, new SimpleTextWatcher());
@@ -54,8 +57,7 @@ public class ScrollItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (hasFocus) {
                         itemViewHolder.getRemoveImageButton().setVisibility(View.VISIBLE);
-                    }
-                    else {
+                    } else {
                         itemViewHolder.getRemoveImageButton().setVisibility(View.INVISIBLE);
                     }
                 }
@@ -65,7 +67,9 @@ public class ScrollItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                        mDragStartListener.onStartDrag(itemViewHolder);
+                        if (mDragStartListener != null) {
+                            mDragStartListener.onStartDrag(itemViewHolder);
+                        }
                     }
                     return false;
                 }
@@ -99,8 +103,7 @@ public class ScrollItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             itemViewHolder.getBinding().setHandler(this);
             itemViewHolder.getBinding().setScrollItemListItem(item);
             itemViewHolder.getBinding().executePendingBindings();
-        }
-        else if (viewHolder instanceof FooterViewHolder) {
+        } else if (viewHolder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) viewHolder;
 
             footerViewHolder.getBinding().setHandler(this);
@@ -135,8 +138,7 @@ public class ScrollItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     for (int i = fromPosition; i < toPosition; i++) {
                         Collections.swap(mScrollItemListItems, i, i + 1);
                     }
-                }
-                else {
+                } else {
                     for (int i = fromPosition; i > toPosition; i--) {
                         Collections.swap(mScrollItemListItems, i, i - 1);
                     }
@@ -170,12 +172,12 @@ public class ScrollItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     //endregion ScrollItemListItemHandler Methods
 
     //region Getters and Setters
-    public List<ScrollItemListItem> getItems() {
-        return mScrollItemListItems;
-    }
-
     public void setItems(List<ScrollItemListItem> items) {
         mScrollItemListItems = items;
+    }
+
+    public void setOnStartDragListener(OnStartDragListener listener) {
+        mDragStartListener = listener;
     }
     //endregion Getters and Setters
 

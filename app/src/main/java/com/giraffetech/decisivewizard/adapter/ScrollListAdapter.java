@@ -1,5 +1,7 @@
 package com.giraffetech.decisivewizard.adapter;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,23 +18,25 @@ import java.util.List;
 public class ScrollListAdapter extends RecyclerView.Adapter<ScrollListViewHolder> {
 
     //region Fields
+    @NonNull
     private List<ScrollListItem> mScrollListItems = new ArrayList<>();
+
+    @Nullable
     private ScrollListItemHandler mScrollListItemHandler;
     //endregion Fields
 
     //region Constructors
-    public ScrollListAdapter(ScrollListItemHandler scrollListItemHandler) {
-        mScrollListItemHandler = scrollListItemHandler;
+    public ScrollListAdapter() {
     }
     //endregion Constructors
 
     //region Getters and Setters
-    public List<ScrollListItem> getItems() {
-        return mScrollListItems;
-    }
-
     public void setItems(List<ScrollListItem> items) {
         mScrollListItems = items;
+    }
+
+    public void setScrollListItemHandler(ScrollListItemHandler scrollListItemHandler) {
+        mScrollListItemHandler = scrollListItemHandler;
     }
     //endregion Getters and Setters
 

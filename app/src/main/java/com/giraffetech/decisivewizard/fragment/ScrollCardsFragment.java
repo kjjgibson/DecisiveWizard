@@ -3,7 +3,6 @@ package com.giraffetech.decisivewizard.fragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +11,16 @@ import android.widget.Toast;
 
 import com.giraffetech.decisivewizard.R;
 import com.giraffetech.decisivewizard.adapter.ScrollCardAdapter;
+import com.giraffetech.decisivewizard.dependencyinjection.component.DaggerScrollCardsFragmentComponent;
 import com.giraffetech.decisivewizard.listener.OnListFragmentInteractionListener;
 import com.giraffetech.decisivewizard.listener.ScrollListItemHandler;
 import com.giraffetech.decisivewizard.listitem.ScrollCardItem;
 import com.giraffetech.decisivewizard.model.Scroll;
+import com.giraffetech.decisivewizard.dependencyinjection.module.ScrollCardsFragmentModule;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 /**
  * A fragment representing a list of Items.
@@ -27,8 +30,19 @@ import java.util.ArrayList;
  */
 public class ScrollCardsFragment extends Fragment implements ScrollListItemHandler {
 
-    private OnListFragmentInteractionListener mListener;
+    //region Dependencies
+    @Inject
+    protected ScrollCardAdapter mScrollCardAdapter;
 
+    @Inject
+    protected RecyclerView.LayoutManager mLayoutManager;
+    //endregion Dependencies
+
+    //region Fields
+    private OnListFragmentInteractionListener mListener;
+    //endregion Fields
+
+    //region Constructors
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -39,19 +53,30 @@ public class ScrollCardsFragment extends Fragment implements ScrollListItemHandl
     public static ScrollCardsFragment newInstance() {
         return new ScrollCardsFragment();
     }
+    //endregion Constructors
 
     //region Lifecycle Methods
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //Inject the dependencies
+        DaggerScrollCardsFragmentComponent.builder()
+                .scrollCardsFragmentModule(new ScrollCardsFragmentModule(getActivity().getApplicationContext()))
+                .build()
+                .inject(this);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scroll_cards, container, false);
 
-        ScrollCardAdapter scrollCardAdapter = new ScrollCardAdapter(this); //TODO: Dependency
-        scrollCardAdapter.setItems(getScrollCardItems());
+        mScrollCardAdapter.setScrollListItemHandler(this);
+        mScrollCardAdapter.setItems(getScrollCardItems());
 
-        Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context)); //TODO: Dependency
-        recyclerView.setAdapter(scrollCardAdapter);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(mScrollCardAdapter);
 
         return view;
     }

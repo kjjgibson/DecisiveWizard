@@ -1,9 +1,7 @@
 package com.giraffetech.decisivewizard.fragment;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
@@ -12,15 +10,29 @@ import android.view.ViewGroup;
 
 import com.giraffetech.decisivewizard.R;
 import com.giraffetech.decisivewizard.adapter.ScrollItemAdapter;
-import com.giraffetech.decisivewizard.callback.DragItemTouchHelperCallback;
+import com.giraffetech.decisivewizard.dependencyinjection.component.DaggerCreateScrollFragmentComponent;
 import com.giraffetech.decisivewizard.listener.OnStartDragListener;
 import com.giraffetech.decisivewizard.listitem.ScrollItemListItem;
+import com.giraffetech.decisivewizard.dependencyinjection.module.CreateScrollFragmentModule;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 public class CreateScrollFragment extends Fragment implements OnStartDragListener {
 
-    private ItemTouchHelper mItemTouchHelper;
+    //region Dependencies
+    @Inject
+    protected ScrollItemAdapter mScrollItemAdapter;
+
+    @Inject
+    protected RecyclerView.LayoutManager mLayoutManager;
+
+    @Inject
+    protected ItemTouchHelper mItemTouchHelper;
+    //endregion Dependencies
+
+    //region Constructors
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -32,22 +44,31 @@ public class CreateScrollFragment extends Fragment implements OnStartDragListene
     public static CreateScrollFragment newInstance() {
         return new CreateScrollFragment();
     }
+    //endregion Constructors
 
     //region Lifecycle Methods
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //Inject the dependencies
+        DaggerCreateScrollFragmentComponent.builder()
+                .createScrollFragmentModule(new CreateScrollFragmentModule(getActivity().getApplicationContext()))
+                .build()
+                .inject(this);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_scroll, container, false);
 
-        //TODO: Dependency
-        ScrollItemAdapter scrollItemListItemItemAdapter = new ScrollItemAdapter(this);
-        scrollItemListItemItemAdapter.setItems(getScrollItemListItems());
+        mScrollItemAdapter.setOnStartDragListener(this);
+        mScrollItemAdapter.setItems(getScrollItemListItems());
 
-        Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewScrollListItems);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context)); //TODO: Dependency
-        recyclerView.setAdapter(scrollItemListItemItemAdapter);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(mScrollItemAdapter);
 
-        mItemTouchHelper = new ItemTouchHelper(new DragItemTouchHelperCallback(scrollItemListItemItemAdapter)); //TODO: Dependency
         mItemTouchHelper.attachToRecyclerView(recyclerView);
 
         return view;

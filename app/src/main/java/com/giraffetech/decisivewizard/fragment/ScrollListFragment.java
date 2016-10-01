@@ -3,7 +3,6 @@ package com.giraffetech.decisivewizard.fragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,8 @@ import android.widget.Toast;
 
 import com.giraffetech.decisivewizard.R;
 import com.giraffetech.decisivewizard.adapter.ScrollListAdapter;
+import com.giraffetech.decisivewizard.dependencyinjection.component.DaggerScrollListFragmentComponent;
+import com.giraffetech.decisivewizard.dependencyinjection.module.ScrollListFragmentModule;
 import com.giraffetech.decisivewizard.itemdecoration.DividerItemDecoration;
 import com.giraffetech.decisivewizard.listener.OnListFragmentInteractionListener;
 import com.giraffetech.decisivewizard.listener.ScrollListItemHandler;
@@ -20,6 +21,8 @@ import com.giraffetech.decisivewizard.model.Scroll;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 /**
  * A fragment representing a list of Scrolls.
  * <p/>
@@ -27,6 +30,17 @@ import java.util.ArrayList;
  * interface.
  */
 public class ScrollListFragment extends Fragment implements ScrollListItemHandler {
+
+    //region Dependencies
+    @Inject
+    protected ScrollListAdapter mScrollListAdapter;
+
+    @Inject
+    protected RecyclerView.LayoutManager mLayoutManager;
+
+    @Inject
+    protected DividerItemDecoration mDividerItemDecoration;
+    //endregion Dependencies
 
     private OnListFragmentInteractionListener mListener;
 
@@ -45,20 +59,25 @@ public class ScrollListFragment extends Fragment implements ScrollListItemHandle
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Inject the dependencies
+        DaggerScrollListFragmentComponent.builder()
+                .scrollListFragmentModule(new ScrollListFragmentModule(getActivity().getApplicationContext()))
+                .build()
+                .inject(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scroll_list, container, false);
 
-        ScrollListAdapter scrollListAdapter = new ScrollListAdapter(this); //TODO: Dependency
-        scrollListAdapter.setItems(getScrollListItems());
+        mScrollListAdapter.setScrollListItemHandler(this);
+        mScrollListAdapter.setItems(getScrollListItems());
 
-        Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context)); //TODO: Dependency
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity())); //TODO: Dependency
-        recyclerView.setAdapter(scrollListAdapter);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(mDividerItemDecoration);
+        recyclerView.setAdapter(mScrollListAdapter);
 
         return view;
     }

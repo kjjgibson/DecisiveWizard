@@ -3,19 +3,21 @@ package com.giraffetech.decisivewizard.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.giraffetech.decisivewizard.R;
+import com.giraffetech.decisivewizard.dependencyinjection.component.DaggerScrollListActivityComponent;
+import com.giraffetech.decisivewizard.dependencyinjection.module.ScrollListActivityModule;
 import com.giraffetech.decisivewizard.fragment.ScrollCardsFragment;
 import com.giraffetech.decisivewizard.fragment.ScrollListFragment;
 import com.giraffetech.decisivewizard.listener.OnListFragmentInteractionListener;
 import com.giraffetech.decisivewizard.model.Scroll;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,11 +28,25 @@ public class ScrollListActivity extends AppCompatActivity implements OnListFragm
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.fab) FloatingActionButton mFab;
 
+    @Inject
+    protected ScrollListFragment mScrollListFragment;
+
+    @Inject
+    protected ScrollCardsFragment mScrollCardsFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scroll_list);
+
+        //Bind the views
         ButterKnife.bind(this);
+
+        //Inject the dependencies
+        DaggerScrollListActivityComponent.builder()
+                .scrollListActivityModule(new ScrollListActivityModule())
+                .build()
+                .inject(this);
 
         setSupportActionBar(mToolbar);
 
@@ -82,14 +98,14 @@ public class ScrollListActivity extends AppCompatActivity implements OnListFragm
     private void showScrollListFragment() {
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, ScrollListFragment.newInstance(), ScrollListFragment.class.getName())
-                .commit(); //TODO: Dependency
+                .replace(R.id.fragment_container, mScrollListFragment, mScrollListFragment.getClass().getName())
+                .commit();
     }
 
     private void showScrollCardsFragment() {
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, ScrollCardsFragment.newInstance(), ScrollCardsFragment.class.getName())
-                .commit(); //TODO: Dependency
+                .replace(R.id.fragment_container, mScrollCardsFragment, mScrollCardsFragment.getClass().getName())
+                .commit();
     }
 }
