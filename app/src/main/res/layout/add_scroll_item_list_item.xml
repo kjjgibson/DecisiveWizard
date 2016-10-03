@@ -11,6 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/linearLayoutAddItemRow"
         android:clickable="true"
         android:gravity="center_vertical"
         android:onClick="@{() -> handler.addNewItemAtEnd()}"
@@ -18,7 +19,7 @@
         android:padding="10dp">
 
         <ImageView
-            android:id="@+id/imageViewDragIcon"
+            android:id="@+id/imageViewAddIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"

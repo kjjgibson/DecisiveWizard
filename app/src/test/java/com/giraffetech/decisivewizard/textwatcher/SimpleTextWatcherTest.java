@@ -2,6 +2,8 @@ package com.giraffetech.decisivewizard.textwatcher;
 
 import android.text.Editable;
 
+import com.giraffetech.decisivewizard.BuildConfig;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,11 +11,13 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
 public class SimpleTextWatcherTest {
 
     @Rule
