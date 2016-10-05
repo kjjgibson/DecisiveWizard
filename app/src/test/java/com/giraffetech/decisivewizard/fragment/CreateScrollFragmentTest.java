@@ -1,13 +1,11 @@
 package com.giraffetech.decisivewizard.fragment;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 
-import com.giraffetech.decisivewizard.BuildConfig;
 import com.giraffetech.decisivewizard.adapter.ScrollItemAdapter;
 
 import org.junit.Rule;
@@ -18,12 +16,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.M, manifest = "app/src/main/AndroidManifest.xml")
 public class CreateScrollFragmentTest {
 
     //region Rules
