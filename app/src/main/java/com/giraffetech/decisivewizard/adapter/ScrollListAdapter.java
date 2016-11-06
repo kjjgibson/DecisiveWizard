@@ -35,6 +35,14 @@ public class ScrollListAdapter extends RecyclerView.Adapter<ScrollListViewHolder
         mScrollListItems = items;
     }
 
+    public List<ScrollListItem> getItems() {
+        return mScrollListItems;
+    }
+
+    public void addItem(ScrollListItem scrollListItem) {
+        mScrollListItems.add(scrollListItem);
+    }
+
     public void setScrollListItemHandler(ScrollListItemHandler scrollListItemHandler) {
         mScrollListItemHandler = scrollListItemHandler;
     }

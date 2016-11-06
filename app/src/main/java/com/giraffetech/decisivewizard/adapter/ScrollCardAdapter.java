@@ -35,7 +35,16 @@ public class ScrollCardAdapter extends RecyclerView.Adapter<ScrollCardViewHolder
         mScrollCardItems = items;
     }
 
-    public void setScrollListItemHandler(ScrollListItemHandler scrollListItemHandler) {
+    @NonNull
+    public List<ScrollCardItem> getItems() {
+        return mScrollCardItems;
+    }
+
+    public void addItem(@NonNull ScrollCardItem scrollCardItem) {
+        mScrollCardItems.add(scrollCardItem);
+    }
+
+    public void setScrollListItemHandler(@Nullable ScrollListItemHandler scrollListItemHandler) {
         mScrollListItemHandler = scrollListItemHandler;
     }
     //endregion Getters and Setters

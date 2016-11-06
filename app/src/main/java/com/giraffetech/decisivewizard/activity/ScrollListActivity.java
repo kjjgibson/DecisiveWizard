@@ -3,11 +3,10 @@ package com.giraffetech.decisivewizard.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.giraffetech.decisivewizard.R;
 import com.giraffetech.decisivewizard.dependencyinjection.component.DaggerScrollListActivityComponent;
@@ -17,23 +16,41 @@ import com.giraffetech.decisivewizard.fragment.ScrollListFragment;
 import com.giraffetech.decisivewizard.listener.OnListFragmentInteractionListener;
 import com.giraffetech.decisivewizard.model.Scroll;
 
+import org.parceler.Parcels;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ScrollListActivity extends AppCompatActivity implements OnListFragmentInteractionListener {
+public class ScrollListActivity extends OrmActivity implements OnListFragmentInteractionListener {
 
-    @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.fab) FloatingActionButton mFab;
+    //region Constants
+    private static final String LOG = ScrollListActivity.class.getCanonicalName();
+    private static final int REQUEST_CODE_CREATE_SCROLL = 100;
+    //endregion Constants
 
+    //region Bound Views
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.fab)
+    FloatingActionButton mFab;
+    //endregion Bound Views
+
+    //region Dependencies
     @Inject
     protected ScrollListFragment mScrollListFragment;
 
     @Inject
     protected ScrollCardsFragment mScrollCardsFragment;
+    //endregion Dependencies
 
+    //region Fields
+    private OnScrollUpdatedListener mScrollUpdatedListener;
+    //endregion Fields
+
+    //region Activity Lifecycle
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,19 +100,44 @@ public class ScrollListActivity extends AppCompatActivity implements OnListFragm
     }
 
     @Override
-    public void onScrollSelected(Scroll scroll) {
-        Toast.makeText(this, "Scroll selected: " + scroll.getName(), Toast.LENGTH_LONG).show();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_CODE_CREATE_SCROLL:
+                if (resultCode == RESULT_OK) {
+                    Scroll scroll = Parcels.unwrap(data.getParcelableExtra(CreateScrollActivity.PARCEL_KEY_SCROLL));
+                    mScrollUpdatedListener.onScrollUpdated(scroll);
+                } else {
+                    Log.e(LOG, "Unexpected resultCode when returning from creating a Scroll: " + resultCode);
+                }
+                break;
+        }
     }
+
+    //endregion Activity Lifecycle
+
+    //region OnListFragmentInteractionListener Methods
+    @Override
+    public void onScrollSelected(Scroll scroll) {
+        Intent intent = new Intent(this, CreateScrollActivity.class);
+        intent.putExtra(CreateScrollActivity.PARCEL_KEY_SCROLL, Parcels.wrap(scroll));
+        startActivityForResult(intent, REQUEST_CODE_CREATE_SCROLL);
+    }
+    //endregion OnListFragmentInteractionListener Methods
 
     //region Click Listeners
     @OnClick(R.id.fab)
     void onFabClicked() {
         Intent intent = new Intent(this, CreateScrollActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE_CREATE_SCROLL);
     }
     //endregion Click Listeners
 
+    //region Private Methods
     private void showScrollListFragment() {
+        mScrollUpdatedListener = mScrollListFragment;
+
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, mScrollListFragment, mScrollListFragment.getClass().getName())
@@ -103,9 +145,19 @@ public class ScrollListActivity extends AppCompatActivity implements OnListFragm
     }
 
     private void showScrollCardsFragment() {
+        mScrollUpdatedListener = mScrollCardsFragment;
+
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, mScrollCardsFragment, mScrollCardsFragment.getClass().getName())
                 .commit();
     }
+    //endregion Private Methods
+
+    public interface OnScrollUpdatedListener {
+
+        void onScrollUpdated(Scroll scroll);
+
+    }
+
 }

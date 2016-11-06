@@ -33,7 +33,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:hint="@string/item"
-            android:text="@{scrollItemListItem.itemText}"
+            android:text="@={scrollItemListItem.itemText}"
             android:inputType="textCapWords|textMultiLine" />
 
         <ImageButton

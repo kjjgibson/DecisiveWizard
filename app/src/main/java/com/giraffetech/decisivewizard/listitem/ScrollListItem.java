@@ -7,6 +7,7 @@ import com.giraffetech.decisivewizard.model.Scroll;
 public class ScrollListItem {
 
     //region Fields
+    @NonNull
     private Scroll mScroll;
     //endregion Fields
 
@@ -17,16 +18,22 @@ public class ScrollListItem {
     //endregion Constructors
 
     //region Getters and Setters
+    @NonNull
     public Scroll getScroll() {
         return mScroll;
     }
 
+    public void setScroll(@NonNull Scroll scroll) {
+        mScroll = scroll;
+    }
+
+    @NonNull
     public String getName() {
-        return mScroll != null ? mScroll.getName() : "";
+        return mScroll.getName() != null ? mScroll.getName() : "(Unnamed)";
     }
 
     public String getDescription() {
-        return mScroll != null ? mScroll.getDescription() : "";
+        return mScroll.getDescription() != null ? mScroll.getDescription() : "";
     }
     //endregion Getters and Setters
 

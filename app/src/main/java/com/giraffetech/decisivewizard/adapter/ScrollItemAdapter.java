@@ -20,7 +20,6 @@ import com.giraffetech.decisivewizard.viewholder.ScrollItemViewHolder;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class ScrollItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements DragItemTouchHelperCallback.ItemTouchHelperAdapter, ScrollItemListItemHandler {
 
@@ -28,7 +27,7 @@ public class ScrollItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private static final int FOOTER_VIEW = 1;
 
     @NonNull
-    private List<ScrollItemListItem> mScrollItemListItems = new ArrayList<>();
+    private ArrayList<ScrollItemListItem> mScrollItemListItems = new ArrayList<>();
 
     @Nullable
     private OnStartDragListener mDragStartListener;
@@ -172,8 +171,12 @@ public class ScrollItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     //endregion ScrollItemListItemHandler Methods
 
     //region Getters and Setters
-    public void setItems(List<ScrollItemListItem> items) {
+    public void setItems(ArrayList<ScrollItemListItem> items) {
         mScrollItemListItems = items;
+    }
+
+    public ArrayList<ScrollItemListItem> getItems() {
+        return mScrollItemListItems;
     }
 
     public void setOnStartDragListener(OnStartDragListener listener) {

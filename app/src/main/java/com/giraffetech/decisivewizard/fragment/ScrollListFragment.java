@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.giraffetech.decisivewizard.R;
+import com.giraffetech.decisivewizard.activity.ScrollListActivity;
 import com.giraffetech.decisivewizard.adapter.ScrollListAdapter;
 import com.giraffetech.decisivewizard.dependencyinjection.component.DaggerScrollListFragmentComponent;
 import com.giraffetech.decisivewizard.dependencyinjection.module.ScrollListFragmentModule;
+import com.giraffetech.decisivewizard.interfaces.DatabaseAccessor;
 import com.giraffetech.decisivewizard.itemdecoration.DividerItemDecoration;
 import com.giraffetech.decisivewizard.listener.OnListFragmentInteractionListener;
 import com.giraffetech.decisivewizard.listener.ScrollListItemHandler;
@@ -20,6 +22,7 @@ import com.giraffetech.decisivewizard.listitem.ScrollListItem;
 import com.giraffetech.decisivewizard.model.Scroll;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -29,7 +32,7 @@ import javax.inject.Inject;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ScrollListFragment extends Fragment implements ScrollListItemHandler {
+public class ScrollListFragment extends Fragment implements ScrollListItemHandler, ScrollListActivity.OnScrollUpdatedListener {
 
     //region Dependencies
     @Inject
@@ -43,6 +46,8 @@ public class ScrollListFragment extends Fragment implements ScrollListItemHandle
     //endregion Dependencies
 
     private OnListFragmentInteractionListener mListener;
+
+    private DatabaseAccessor mDatabaseAccessor;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -90,12 +95,19 @@ public class ScrollListFragment extends Fragment implements ScrollListItemHandle
         } else {
             throw new RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener");
         }
+
+        if (context instanceof DatabaseAccessor) {
+            mDatabaseAccessor = (DatabaseAccessor) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement DatabaseAccessor");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mDatabaseAccessor = null;
     }
     //endregion Lifecycle Methods
 
@@ -116,12 +128,41 @@ public class ScrollListFragment extends Fragment implements ScrollListItemHandle
     }
     //endregion ScrollListItemHandler Methods
 
+    //region ScrollListActivity.OnScrollUpdatedListener
+
+    //endregion ScrollListActivity.OnScrollUpdatedListener
+    @Override
+    public void onScrollUpdated(Scroll scroll) {
+        boolean scrollUpdated = false;
+
+        //Check if the Scroll we update is already in the list of ScrollCardItems and update it if it is
+        List<ScrollListItem> scrollListItems = mScrollListAdapter.getItems();
+        for (int i = 0; i < mScrollListAdapter.getItemCount(); i++) {
+            ScrollListItem scrollListItem = scrollListItems.get(i);
+
+            if (scrollListItem.getScroll().getDbId() == scroll.getDbId()) {
+                scrollListItem.setScroll(scroll);
+                mScrollListAdapter.notifyItemChanged(i);
+
+                scrollUpdated = true;
+                break;
+            }
+        }
+
+        //If the Scroll was not already in the list, let's add it and notify the RecyclerView
+        if (!scrollUpdated) {
+            mScrollListAdapter.addItem(new ScrollListItem(scroll));
+            mScrollListAdapter.notifyItemInserted(mScrollListAdapter.getItemCount() - 1);
+        }
+    }
+
     //region Private Methods
     private ArrayList<ScrollListItem> getScrollListItems() {
+        ArrayList<Scroll> scrolls = Scroll.getScrolls(mDatabaseAccessor.getHelper());
+
         ArrayList<ScrollListItem> scrollListItems = new ArrayList<>();
-        for (int i = 0; i <= 20; i++) {
-            scrollListItems.add(new ScrollListItem(new Scroll("Lunch", "What to have for lunch?!", null)));
-            scrollListItems.add(new ScrollListItem(new Scroll("Dinner", "Manly dinner options.", null)));
+        for (Scroll scroll : scrolls) {
+            scrollListItems.add(new ScrollListItem(scroll));
         }
 
         return scrollListItems;

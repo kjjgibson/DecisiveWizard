@@ -1,8 +1,12 @@
 package com.giraffetech.decisivewizard.listitem;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.support.annotation.NonNull;
 
-public class ScrollItemListItem {
+import com.giraffetech.decisivewizard.BR;
+
+public class ScrollItemListItem extends BaseObservable {
 
     //region Fields
     //The text that should be displayed in the EditText
@@ -24,8 +28,14 @@ public class ScrollItemListItem {
     //endregion Constructors
 
     //region Getters and Setters
+    @Bindable
     public String getItemText() {
         return mItemText;
+    }
+
+    public void setItemText(String itemText) {
+        mItemText = itemText;
+        notifyPropertyChanged(BR.itemText);
     }
 
     public boolean shouldHaveFocus() {
