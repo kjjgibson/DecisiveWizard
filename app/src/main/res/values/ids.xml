@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="scroll_list_item" type="id"/>
+    <item name="scroll_card_item" type="id"/>
+    <item name="scroll_item_list_item" type="id"/>
+    <item name="add_scroll_item_list_item" type="id"/>
+</resources>

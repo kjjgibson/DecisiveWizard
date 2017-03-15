@@ -2,5 +2,23 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#FFAB40</color>
+
+    <color name="materialRedPrimary">#F44336</color>
+    <color name="materialPurplePrimary">#9C27B0</color>
+    <color name="materialIndigoPrimary">#3F51B5</color>
+    <color name="materialCyanPrimary">#00BCD4</color>
+    <color name="materialTealPrimary">#009688</color>
+    <color name="materialGreenPrimary">#4CAF50</color>
+    <color name="materialAmberPrimary">#FFC107</color>
+
+    <array name="materialPrimaryColors">
+        <item>@color/materialRedPrimary</item>
+        <item>@color/materialPurplePrimary</item>
+        <item>@color/materialIndigoPrimary</item>
+        <item>@color/materialCyanPrimary</item>
+        <item>@color/materialTealPrimary</item>
+        <item>@color/materialGreenPrimary</item>
+        <item>@color/materialAmberPrimary</item>
+    </array>
 </resources>

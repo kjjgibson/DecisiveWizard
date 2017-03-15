@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="handler"
+            type="com.giraffetech.decisivewizard.listener.ScrollItemListItemHandler" />
+
+        <variable
+            name="scrollItemListItem"
+            type="com.giraffetech.decisivewizard.listitem.ScrollItemListItem" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/imageViewDragHandle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/ic_reorder_black_24dp"
+            android:contentDescription="@string/reorder" />
+
+        <EditText
+            android:id="@+id/editTextScrollItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:hint="@string/item"
+            android:text="@={scrollItemListItem.itemText}"
+            android:inputType="textCapWords|textMultiLine" />
+
+        <ImageButton
+            android:id="@+id/imageButtonRemoveItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_clear_black_24dp"
+            android:visibility="invisible"
+            android:onClick="@{() -> handler.removeItem(scrollItemListItem)}"
+            android:contentDescription="@string/item" />
+
+    </LinearLayout>
+
+</layout>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="handler" type="com.giraffetech.decisivewizard.listener.ScrollListItemHandler" />
+        <variable name="scrollListItem" type="com.giraffetech.decisivewizard.listitem.ScrollListItem" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> handler.onItemClick(scrollListItem.scroll)}">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutTitleDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/linearLayoutButtons"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/textViewName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{scrollListItem.name}"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="Lunch Options"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{scrollListItem.description}"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="What to have for lunch?" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/linearLayoutTitleDescription"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="end"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp">
+
+            <ImageButton
+                android:id="@+id/imageButtonDecide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_link_black_24dp"
+                android:onClick="@{() -> handler.onDecideClick(scrollListItem.scroll)}"
+                android:contentDescription="@string/decide" />
+
+            <ImageButton
+                android:id="@+id/imageButtonCustomDecide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_low_priority_black_24dp"
+                android:onClick="@{() -> handler.onCustomDecideClick(scrollListItem.scroll)}"
+                android:contentDescription="@string/custom_decide" />
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

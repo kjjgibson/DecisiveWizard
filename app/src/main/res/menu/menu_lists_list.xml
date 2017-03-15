@@ -1,9 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.giraffetech.decisivewizard.ListsListActivity" >
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+    tools:context=".activity.ScrollListActivity">
+    <item
+        android:id="@+id/action_toggle_scroll_view"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        android:title="@string/toggle_scroll_view"
+        android:icon="@drawable/ic_list_white_36dp"
+        app:showAsAction="always" />
 </menu>

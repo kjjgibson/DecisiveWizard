@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="scroll"
+            type="com.giraffetech.decisivewizard.model.Scroll"/>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context=".fragment.CreateScrollFragment">
+
+        <EditText
+            android:id="@+id/editTextName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/transparent"
+            android:hint="@string/name"
+            android:text="@={scroll.name}"
+            android:inputType="textCapWords"
+            android:maxLines="1"
+            android:textSize="28sp"/>
+
+        <EditText
+            android:id="@+id/editTextDescription"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextName"
+            android:layout_marginBottom="15dp"
+            android:background="@android:color/transparent"
+            android:text="@={scroll.description}"
+            android:hint="@string/description"/>
+
+        <android.support.v7.widget.RecyclerView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/recyclerViewScrollListItems"
+            android:name="com.giraffetech.decisivewizard.fragment.CreateScrollFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/editTextDescription"
+            app:layoutManager="LinearLayoutManager"
+            tools:context="com.giraffetech.decisivewizard.fragment.CreateScrollFragment"
+            tools:listitem="@layout/scroll_item_list_item"/>
+
+    </RelativeLayout>
+</layout>
